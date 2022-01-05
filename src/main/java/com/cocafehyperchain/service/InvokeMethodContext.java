@@ -64,6 +64,9 @@ public class InvokeMethodContext {
         } catch (RequestException e) {
             log.debug(e.toString());
             return ResultUtil.error(HttpStatus.HTTP_BAD_REQUEST, e.getMsg());
+        } catch (NumberFormatException e) {
+            log.debug(e.getMessage());
+            return ResultUtil.error(HttpStatus.HTTP_BAD_REQUEST, "请检查id范围");
         }
         log.debug("方法调用成功: " + JSONObject.toJSONString(request));
         log.debug("返回结果:" + JSONObject.toJSONString(result));
