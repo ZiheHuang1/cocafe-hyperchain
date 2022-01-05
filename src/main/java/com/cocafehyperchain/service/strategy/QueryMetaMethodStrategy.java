@@ -11,8 +11,8 @@ import cn.hyperchain.sdk.service.AccountService;
 import cn.hyperchain.sdk.service.ContractService;
 import cn.hyperchain.sdk.transaction.Transaction;
 import com.alibaba.fastjson.JSONObject;
-import com.cocafehyperchain.domain.MetaRequest;
 import com.cocafehyperchain.domain.MintRequest;
+import com.cocafehyperchain.domain.QueryMetaRequest;
 import com.cocafehyperchain.util.Result;
 import com.cocafehyperchain.util.ResultUtil;
 import com.redcave.property.business.AccountBusiness;
@@ -25,13 +25,13 @@ import org.springframework.stereotype.Component;
  * @author huangzihe
  * @date 2021/12/29 5:15 下午
  */
-@Component("meta")
+@Component("queryMeta")
 @Log4j
-public class MetaMethodStrategy extends InvokeMethod {
+public class QueryMetaMethodStrategy extends InvokeMethod {
 
     @Override
     public Transaction prepareTx(Object param) throws RequestException {
-        MetaRequest metaRequest = (MetaRequest) param;
+        QueryMetaRequest metaRequest = (QueryMetaRequest) param;
         return propertyBusiness.queryMeta(metaRequest.getId(), 1, account);
     }
 

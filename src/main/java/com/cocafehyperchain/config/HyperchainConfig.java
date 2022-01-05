@@ -30,7 +30,7 @@ public class HyperchainConfig {
 
     @Bean
     public ProviderManager providerManager() {
-        //Todo 后续如果多结点，需要改造
+        //Todo 后续如果多节点，需要改造
         HttpProvider httpProvider = new DefaultHttpProvider.Builder()
                 .setUrl(node)
                 .build();

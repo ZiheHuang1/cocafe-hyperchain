@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2021/12/29 5:15 下午
  */
 @Data
-public class MetaRequest {
+public class QueryMetaRequest {
     long id;
 
     String accountJson;
