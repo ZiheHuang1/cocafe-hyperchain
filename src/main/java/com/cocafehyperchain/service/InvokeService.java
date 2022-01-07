@@ -23,12 +23,8 @@ public class InvokeService {
     @Autowired
     InvokeMethodContext context;
 
-    public Result asyncOnvoke(BaseRequest request) {
-        return context.AsyncInvokeMethod(request);
-    }
-
-    public Result syncOnvoke(BaseRequest request) {
-        return context.SyncInvokeMethod(request);
+    public Result invoke(BaseRequest request) {
+        return context.invokeMethod(request);
     }
 
 }
