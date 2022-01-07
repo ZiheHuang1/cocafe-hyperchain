@@ -17,6 +17,8 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -38,12 +40,14 @@ public class InvokeMethodContext {
 
     public static String packagePath = "com.cocafehyperchain.domain.";
 
+    public static List<String> writeContractList = Arrays.asList("mint", "transfer", "setPropertyStatus");
+
     /**
-     * 模板方法
+     * 同步等待结果
      * @param request
      * @return
      */
-    public Result invokeMethod(BaseRequest request) {
+    public Result SyncInvokeMethod(BaseRequest request) {
         Result result;
         // 1、 获取对应的策略
         InvokeMethod method = strategyMap.get(request.getMethod());
@@ -55,7 +59,7 @@ public class InvokeMethodContext {
             Object object = JSONObject.parseObject(request.getParams(), aclass);
             Transaction tx = method.prepareTx(object);
             // 4、 发送请求
-            ReceiptResponse response = sendRequestToChain(tx);
+            ReceiptResponse response = SyncSendRequestToChain(tx);
             // 5、 解析结果
             result = method.decode(response);
         } catch (ClassNotFoundException e) {
@@ -74,17 +78,69 @@ public class InvokeMethodContext {
     }
 
     /**
-     * 向链上发送请求
+     * 异步，返回txHash
+     * @param request
+     * @return
+     */
+    public Result AsyncInvokeMethod(BaseRequest request) {
+        Result result;
+        // 1、 获取对应的策略
+        InvokeMethod method = strategyMap.get(request.getMethod());
+        // 2、 获取对应的解析Request
+        Class<?> aclass;
+        try {
+            // 3、 构造transaction
+            aclass = Class.forName(packagePath + captureName(request.getMethod()) + "Request");
+            Object object = JSONObject.parseObject(request.getParams(), aclass);
+            Transaction tx = method.prepareTx(object);
+            // 4、 发送请求
+            if (writeContractList.contains(request.getMethod())) {
+                String txHash = AsyncSendRequestToChain(tx);
+                result = ResultUtil.success(txHash);
+            } else {
+                ReceiptResponse response = SyncSendRequestToChain(tx);
+                // 5、解析结果
+                result = method.decode(response);
+            }
+
+        } catch (ClassNotFoundException e) {
+            log.debug(e.toString());
+            return ResultUtil.error(HttpStatus.HTTP_BAD_REQUEST, "不支持的invoke方法");
+        } catch (RequestException e) {
+            log.debug(e.toString());
+            return ResultUtil.error(HttpStatus.HTTP_BAD_REQUEST, e.getMsg());
+        } catch (NumberFormatException e) {
+            log.debug(e.getMessage());
+            return ResultUtil.error(HttpStatus.HTTP_BAD_REQUEST, "请检查id范围");
+        }
+        log.debug("方法调用成功: " + JSONObject.toJSONString(request));
+        log.debug("result:" + JSONObject.toJSONString(result));
+        return result;
+    }
+
+    /**
+     * 向链上发送请求, 并同步等待结果
      * @param tx
      * @return
      * @throws RequestException
      */
-    private ReceiptResponse sendRequestToChain(Transaction tx) throws RequestException {
+    private ReceiptResponse SyncSendRequestToChain(Transaction tx) throws RequestException {
         tx.sign(account);
         Request<TxHashResponse> contractRequest = contractService.invoke(tx);
         return contractRequest.send().polling();
     }
 
+    /**
+     * 向链上发送请求，直接返回txHash
+     * @param tx
+     * @return
+     * @throws RequestException
+     */
+    private String AsyncSendRequestToChain(Transaction tx) throws RequestException {
+        tx.sign(account);
+        Request<TxHashResponse> contractRequest = contractService.invoke(tx);
+        return contractRequest.send().getTxHash();
+    }
     /**
      * 将字符串的首字母转大写
      * @param str 需要转换的字符串
