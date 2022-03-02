@@ -6,6 +6,7 @@ import cn.hyperchain.sdk.transaction.Transaction;
 import com.cocafehyperchain.domain.QueryStatusRequest;
 import com.cocafehyperchain.util.Result;
 import com.cocafehyperchain.util.ResultUtil;
+import com.redcave.property.business.PropertyBusiness;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,13 +16,15 @@ import org.springframework.stereotype.Component;
 @Component("queryStatus")
 public class QueryStatusMethodStrategy extends InvokeMethod {
     @Override
-    public Transaction prepareTx(Object param) throws RequestException {
+    public Transaction prepareTx(String contract, Object param) throws RequestException {
         QueryStatusRequest request = (QueryStatusRequest) param;
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         return propertyBusiness.queryStatus(request.getId(), account);
     }
 
     @Override
-    public Result decode(ReceiptResponse response) {
+    public Result decode(String contract, ReceiptResponse response) {
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         String result = propertyBusiness.decodeResult(response.getRet(), String.class);
         return ResultUtil.success(result);
     }

@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+
 /**
  * @author huangzihe
  * @date 2021/12/29 4:32 下午
@@ -44,8 +46,11 @@ public class HyperchainConfig {
     }
 
     @Bean
-    public PropertyBusiness propertyBusiness(ProviderManager providerManager) {
-        return new PropertyBusiness(providerManager, contractAddress);
+    public HashMap<String, PropertyBusiness> propertyBusiness(ProviderManager providerManager) {
+        PropertyBusiness propertyBusiness = new PropertyBusiness(providerManager, contractAddress);
+        HashMap<String, PropertyBusiness> map = new HashMap<>();
+        map.put(contractAddress, propertyBusiness);
+        return map;
     }
 
     @Bean

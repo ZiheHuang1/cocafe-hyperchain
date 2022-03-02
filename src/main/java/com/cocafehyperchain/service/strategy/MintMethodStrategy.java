@@ -33,17 +33,20 @@ import java.util.List;
 public class MintMethodStrategy extends InvokeMethod {
 
     @Override
-    public Transaction prepareTx(Object param) throws RequestException {
+    public Transaction prepareTx(String contract, Object param) throws RequestException {
         MintRequest mintRequest = (MintRequest) param;
         // 参数转换
+
         long[] ids = ArrayUtil.unWrap(mintRequest.getIds().toArray(new Long[]{}));
         String[] owners = mintRequest.getOwners().toArray(new String[]{});
         String[] metas = mintRequest.getMetas().toArray(new String[]{});
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         return propertyBusiness.emitProperty(ids , owners,  metas, account.getAddress());
     }
 
     @Override
-    public Result decode(ReceiptResponse response) {
+    public Result decode(String contract, ReceiptResponse response) {
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         String result = propertyBusiness.decodeResult(response.getRet(), String.class);
         return ResultUtil.success(result);
     }

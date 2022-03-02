@@ -8,6 +8,7 @@ import com.cocafehyperchain.domain.SetPropertyStatusRequest;
 import com.cocafehyperchain.domain.TransferRequest;
 import com.cocafehyperchain.util.Result;
 import com.cocafehyperchain.util.ResultUtil;
+import com.redcave.property.business.PropertyBusiness;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,15 +20,17 @@ import java.util.List;
 @Component("setPropertyStatus")
 public class SetPropertyStatusMethodStrategy extends InvokeMethod {
     @Override
-    public Transaction prepareTx(Object param) throws RequestException {
+    public Transaction prepareTx(String contract, Object param) throws RequestException {
         SetPropertyStatusRequest request = (SetPropertyStatusRequest) param;
         long[] ids = ArrayUtil.unWrap(request.getIds().toArray(new Long[]{}));
         int[] status = ArrayUtil.unWrap(request.getStatus().toArray(new Integer[]{}));
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         return propertyBusiness.setPropertyStatus(ids, status, account);
     }
 
     @Override
-    public Result decode(ReceiptResponse response) {
+    public Result decode(String contract, ReceiptResponse response) {
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         String result = propertyBusiness.decodeResult(response.getRet(), String.class);
         return ResultUtil.success(result);
     }

@@ -23,13 +23,15 @@ import org.springframework.stereotype.Component;
 @Log4j
 public class OwnerOfMethodStrategy extends InvokeMethod{
     @Override
-    public Transaction prepareTx(Object param) throws RequestException {
+    public Transaction prepareTx(String contract, Object param) throws RequestException {
         OwnerOfRequest ownerOfRequest = (OwnerOfRequest) param;
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         return propertyBusiness.ownerOf(ownerOfRequest.getId(), account);
     }
 
     @Override
-    public Result decode(ReceiptResponse response) {
+    public Result decode(String contract, ReceiptResponse response) {
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         String result = propertyBusiness.decodeResult(response.getRet(), String.class);
         return ResultUtil.success(result);
     }

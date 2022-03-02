@@ -30,13 +30,15 @@ import org.springframework.stereotype.Component;
 public class QueryMetaMethodStrategy extends InvokeMethod {
 
     @Override
-    public Transaction prepareTx(Object param) throws RequestException {
+    public Transaction prepareTx(String contract, Object param) throws RequestException {
         QueryMetaRequest metaRequest = (QueryMetaRequest) param;
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         return propertyBusiness.queryMeta(metaRequest.getId(), 1, account);
     }
 
     @Override
-    public Result decode(ReceiptResponse response) {
+    public Result decode(String contract, ReceiptResponse response) {
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         String[] result = propertyBusiness.decodeResult(response.getRet(), String[].class);
         return ResultUtil.success(result);
     }

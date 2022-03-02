@@ -7,6 +7,7 @@ import cn.hyperchain.sdk.transaction.Transaction;
 import com.cocafehyperchain.domain.TransferRequest;
 import com.cocafehyperchain.util.Result;
 import com.cocafehyperchain.util.ResultUtil;
+import com.redcave.property.business.PropertyBusiness;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,15 +21,17 @@ public class TransferMethodStrategy extends InvokeMethod {
 
 
     @Override
-    public Transaction prepareTx(Object param) throws RequestException {
+    public Transaction prepareTx(String contract, Object param) throws RequestException {
         TransferRequest transferRequest = (TransferRequest) param;
         long[] ids = ArrayUtil.unWrap(transferRequest.getIds().toArray(new Long[]{}));
         String[] tos = transferRequest.getTos().toArray(new String[]{});
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         return propertyBusiness.transferFrom(transferRequest.getFrom() , tos, ids, account);
     }
 
     @Override
-    public Result decode(ReceiptResponse response) {
+    public Result decode(String contract, ReceiptResponse response) {
+        PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
         String result = propertyBusiness.decodeResult(response.getRet(), String.class);
         return ResultUtil.success(result);
     }

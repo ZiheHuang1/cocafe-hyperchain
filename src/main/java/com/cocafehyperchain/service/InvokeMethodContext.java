@@ -53,11 +53,11 @@ public class InvokeMethodContext {
             // 3、 构造transaction
             aclass = Class.forName(packagePath + captureName(request.getMethod()) + "Request");
             Object object = JSONObject.parseObject(request.getParams(), aclass);
-            Transaction tx = method.prepareTx(object);
+            Transaction tx = method.prepareTx(request.getContract(), object);
             // 4、 发送请求
             ReceiptResponse response = sendRequestToChain(tx);
             // 5、 解析结果
-            result = method.decode(response);
+            result = method.decode(request.getContract(), response);
         } catch (ClassNotFoundException e) {
             log.debug(e.toString());
             return ResultUtil.error(HttpStatus.HTTP_BAD_REQUEST, "不支持的invoke方法");

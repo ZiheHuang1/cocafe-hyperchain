@@ -10,10 +10,12 @@ import com.cocafehyperchain.util.Result;
 import com.redcave.property.business.PropertyBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
+
 public abstract class InvokeMethod {
 
     @Autowired
-    PropertyBusiness propertyBusiness;
+    HashMap<String, PropertyBusiness> propertyBusinessMap;
 
     @Autowired
     Account account;
@@ -21,7 +23,7 @@ public abstract class InvokeMethod {
     @Autowired
     ContractService contractService;
 
-    public abstract Transaction prepareTx(Object param) throws RequestException;
+    public abstract Transaction prepareTx(String contract, Object param) throws RequestException;
 
-    public abstract Result decode(ReceiptResponse response);
+    public abstract Result decode(String contract, ReceiptResponse response);
 }

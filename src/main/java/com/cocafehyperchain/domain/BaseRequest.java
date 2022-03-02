@@ -8,6 +8,9 @@ import lombok.Data;
  */
 @Data
 public class BaseRequest {
+
+    String contract;
+
     String method;
 
     /**
