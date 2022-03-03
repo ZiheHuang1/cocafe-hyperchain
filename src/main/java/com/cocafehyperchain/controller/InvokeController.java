@@ -2,13 +2,12 @@ package com.cocafehyperchain.controller;
 
 import cn.hyperchain.sdk.service.ContractService;
 import com.cocafehyperchain.domain.BaseRequest;
+import com.cocafehyperchain.service.ChainAccountService;
 import com.cocafehyperchain.service.InvokeService;
 import com.cocafehyperchain.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author huangzihe
@@ -20,9 +19,17 @@ public class InvokeController {
     @Autowired
     InvokeService invokeService;
 
-    @RequestMapping("invoke")
+    @Autowired
+    ChainAccountService chainAccountService;
+
+    @PostMapping("invoke")
     public Result invoke(@RequestBody BaseRequest request) {
         return invokeService.invoke(request);
+    }
+
+    @PostMapping("generateUserInfo")
+    public Result<String> generateUserInfo(String userId) {
+        return chainAccountService.generateUserInfo();
     }
 
 }

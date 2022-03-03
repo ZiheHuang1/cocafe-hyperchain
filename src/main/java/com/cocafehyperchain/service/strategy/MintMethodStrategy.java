@@ -47,7 +47,8 @@ public class MintMethodStrategy extends InvokeMethod {
     @Override
     public Result decode(String contract, ReceiptResponse response) {
         PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
-        String result = propertyBusiness.decodeResult(response.getRet(), String.class);
-        return ResultUtil.success(result);
+//        String result = propertyBusiness.decodeResult(response.getRet(), String.class);
+        String txHash = response.getTxHash();
+        return ResultUtil.success(txHash);
     }
 }
