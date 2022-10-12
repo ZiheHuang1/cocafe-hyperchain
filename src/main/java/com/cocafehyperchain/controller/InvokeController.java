@@ -26,7 +26,7 @@ public class InvokeController {
 
     @PostMapping("invoke")
     public Result invoke(@RequestBody BaseRequest request) {
-        System.out.println("==================");
+        System.out.println("invoke start=================");
         return invokeService.invoke(request);
     }
 
