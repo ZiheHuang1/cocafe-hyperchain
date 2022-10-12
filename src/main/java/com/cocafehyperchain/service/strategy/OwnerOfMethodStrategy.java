@@ -26,7 +26,7 @@ public class OwnerOfMethodStrategy extends InvokeMethod{
     public Transaction prepareTx(String contract, Object param) throws RequestException {
         OwnerOfRequest ownerOfRequest = (OwnerOfRequest) param;
         PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
-        return propertyBusiness.ownerOf(ownerOfRequest.getId(), account);
+        return propertyBusiness.ownerOf(ownerOfRequest.getId(), account,Transaction.DEFAULT_GAS_PRICE,Transaction.DEFAULT_GAS_LIMIT);
     }
 
     @Override

@@ -36,18 +36,17 @@ public class MintMethodStrategy extends InvokeMethod {
     public Transaction prepareTx(String contract, Object param) throws RequestException {
         MintRequest mintRequest = (MintRequest) param;
         // 参数转换
-
         long[] ids = ArrayUtil.unWrap(mintRequest.getIds().toArray(new Long[]{}));
         String[] owners = mintRequest.getOwners().toArray(new String[]{});
         String[] metas = mintRequest.getMetas().toArray(new String[]{});
         PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
-        return propertyBusiness.emitProperty(ids , owners,  metas, account.getAddress());
+        return propertyBusiness.emitProperty(ids , owners,  metas, account.getAddress(),Transaction.DEFAULT_GAS_PRICE,Transaction.DEFAULT_GAS_LIMIT);
     }
 
     @Override
     public Result decode(String contract, ReceiptResponse response) {
         PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
-//        String result = propertyBusiness.decodeResult(response.getRet(), String.class);
+        String result = propertyBusiness.decodeResult(response.getRet(), String.class);
         String txHash = response.getTxHash();
         return ResultUtil.success(txHash);
     }

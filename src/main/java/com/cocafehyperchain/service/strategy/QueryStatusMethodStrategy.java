@@ -19,7 +19,7 @@ public class QueryStatusMethodStrategy extends InvokeMethod {
     public Transaction prepareTx(String contract, Object param) throws RequestException {
         QueryStatusRequest request = (QueryStatusRequest) param;
         PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
-        return propertyBusiness.queryStatus(request.getId(), account);
+        return propertyBusiness.queryStatus(request.getId(), account,Transaction.DEFAULT_GAS_PRICE,Transaction.DEFAULT_GAS_LIMIT);
     }
 
     @Override
