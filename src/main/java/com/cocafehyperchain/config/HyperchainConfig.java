@@ -4,7 +4,6 @@ import cn.hyperchain.sdk.account.Account;
 import cn.hyperchain.sdk.provider.DefaultHttpProvider;
 import cn.hyperchain.sdk.provider.HttpProvider;
 import cn.hyperchain.sdk.provider.ProviderManager;
-import cn.hyperchain.sdk.service.AccountService;
 import cn.hyperchain.sdk.service.ContractService;
 import cn.hyperchain.sdk.service.ServiceManager;
 import com.redcave.property.business.AccountBusiness;
@@ -12,6 +11,8 @@ import com.redcave.property.business.PropertyBusiness;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import cn.hyperchain.sdk.service.impl.AccountServiceImpl;
+import cn.hyperchain.sdk.service.AccountService;
 
 import java.util.HashMap;
 
@@ -45,6 +46,7 @@ public class HyperchainConfig {
         return accountBusiness.accountFromJson(accountJson);
     }
 
+
     @Bean
     public HashMap<String, PropertyBusiness> propertyBusiness(ProviderManager providerManager) {
         PropertyBusiness propertyBusiness = new PropertyBusiness(providerManager, contractAddress);
@@ -62,4 +64,10 @@ public class HyperchainConfig {
     public AccountBusiness accountService(ProviderManager providerManager) {
         return new AccountBusiness(providerManager);
     }
+
+    @Bean
+    public AccountService accountServiceImpl(ProviderManager providerManager) {
+        return new AccountServiceImpl(providerManager);
+    }
+
 }

@@ -33,7 +33,7 @@ public class QueryMetaMethodStrategy extends InvokeMethod {
     public Transaction prepareTx(String contract, Object param) throws RequestException {
         QueryMetaRequest metaRequest = (QueryMetaRequest) param;
         PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
-        return propertyBusiness.queryMeta(metaRequest.getId(), 1, account);
+        return propertyBusiness.queryMeta(metaRequest.getId(), 1, account,Transaction.DEFAULT_GAS_PRICE,Transaction.DEFAULT_GAS_LIMIT);
     }
 
     @Override

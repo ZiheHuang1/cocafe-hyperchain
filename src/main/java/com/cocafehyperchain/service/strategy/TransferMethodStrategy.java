@@ -26,7 +26,7 @@ public class TransferMethodStrategy extends InvokeMethod {
         long[] ids = ArrayUtil.unWrap(transferRequest.getIds().toArray(new Long[]{}));
         String[] tos = transferRequest.getTos().toArray(new String[]{});
         PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
-        return propertyBusiness.transferFrom(transferRequest.getFrom() , tos, ids, account);
+        return propertyBusiness.transferFrom(transferRequest.getFrom() , tos, ids, account,Transaction.DEFAULT_GAS_PRICE,Transaction.DEFAULT_GAS_LIMIT);
     }
 
     @Override

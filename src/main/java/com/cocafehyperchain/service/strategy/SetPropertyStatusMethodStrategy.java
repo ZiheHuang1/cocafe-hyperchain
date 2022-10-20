@@ -25,7 +25,7 @@ public class SetPropertyStatusMethodStrategy extends InvokeMethod {
         long[] ids = ArrayUtil.unWrap(request.getIds().toArray(new Long[]{}));
         int[] status = ArrayUtil.unWrap(request.getStatus().toArray(new Integer[]{}));
         PropertyBusiness propertyBusiness = propertyBusinessMap.get(contract);
-        return propertyBusiness.setPropertyStatus(ids, status, account);
+        return propertyBusiness.setPropertyStatus(ids, status, account,Transaction.DEFAULT_GAS_PRICE,Transaction.DEFAULT_GAS_LIMIT);
     }
 
     @Override

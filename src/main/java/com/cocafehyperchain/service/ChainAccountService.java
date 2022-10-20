@@ -6,6 +6,7 @@ import cn.hyperchain.sdk.service.AccountService;
 import com.cocafehyperchain.util.Result;
 import com.cocafehyperchain.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,7 +22,6 @@ public class ChainAccountService {
         Account account = accountService.genAccount(Algo.SMRAW);
         String json = account.toJson();
         return ResultUtil.success(json);
-
     }
 
 }

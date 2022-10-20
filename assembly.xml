@@ -1,0 +1,34 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>leaves</id>
+    <formats>
+        <!--压缩文件形式 可选 zip tar.gz等 -->
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+
+    <!-- 项目文件处理 -->
+    <fileSets>
+        <!--配置文件输出位置根目录文件夹下-->
+        <fileSet>
+            <directory>${basedir}/src/main/resources</directory>
+            <includes>
+                <include>application-${profiles.active}.yml</include>
+                <include>*.properties</include>
+                <include>*.sh</include>
+            </includes>
+            <filtered>true</filtered>
+            <outputDirectory>${file.separator}</outputDirectory>
+        </fileSet>
+
+        <!-- 项目代码生成的jar文件放在根目录  -->
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>${file.separator}</outputDirectory>
+            <includes>
+                <include>*${profiles.active}*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

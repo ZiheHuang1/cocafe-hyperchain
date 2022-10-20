@@ -1,5 +1,5 @@
 hyperchain:
-  node: "101.52.127.202:8081"
+  node: "47.97.165.92:8081"
   accountJson: "{\"address\":\"81eec69821b4daed9a4709bab59b1e87560cef3e\",\"publicKey\":\"04da3c78139e1adc898239bf273a9b6486fe8731ca6468a5a525ef89884ec71a895c4676510c5ed2055a195ba70c56e362833606486ce6b5fb8767aa72dc0cc7b5\",\"privateKey\":\"12e7031cdea59734979407a99784eb48f2f3bb29a095fe32adffcdc50cc3c01f\",\"version\":\"4.0\",\"algo\":\"0x13\"}"
   contractAddress: "0xf634e10cc5e045cad22811553a5d71f1a171a466"
 server:
