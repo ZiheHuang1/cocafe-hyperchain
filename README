@@ -21,8 +21,7 @@ PATH=$JAVA_HOME/bin:/Users/jack/software/apache-maven-3.8.6/bin:$PATH
 
 ### 3 本地运行
 ```shell
-mvn spring-boot:run
-
+mvn spring-boot:run -P dev
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 # 测试curl
 curl http://127.0.0.1:61999/home
@@ -47,3 +46,8 @@ java -jar -Dspring.profiles.active=prod cocafe-hyperchain-test-1.0.0-SNAPSHOT.ja
 ## 线上运行方式
 java -jar -Dspring.profiles.active=prod cocafe-hyperchain-prod-1.0.0-SNAPSHOT.jar
 ```
+
+### 6 FAQs
+#### 6.1 本地运行mvn spring-boot:run 出错
+原因：pom.xml没有拷贝配置文件到编译的目录里面
+方法：cp src/main/resources/application.yml target/classes
